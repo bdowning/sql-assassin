@@ -1,0 +1,25 @@
+{
+  "name": "sql-assassin",
+  "version": "0.0.1",
+  "description": "Unfancy SQL builder for ES6",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bdowning/sql-assassin"
+  },
+  "keywords": [
+    "sql",
+    "es6",
+    "template",
+    "strings"
+  ],
+  "author": "Brian Downing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bdowning/sql-assassin/issues"
+  },
+  "homepage": "https://github.com/bdowning/sql-assassin"
+}
