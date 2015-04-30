@@ -35,6 +35,14 @@ describe('with arguments', () => {
         expect(s.vals).to.deep.equal([5]);
         expect(s.query()).to.equal('SELECT * FROM foo WHERE id = $1');
         expect(s.values()).to.deep.equal([5]);
+        expect(s.q.anyFunctionValues).to.equal(false);
+    });
+
+    it('should call function values with args from .values(...args)', () => {
+        let s = sql`SELECT * FROM foo WHERE id = ${(x, y) => (5 + x) * y}`;
+        expect(s.query()).to.equal('SELECT * FROM foo WHERE id = $1');
+        expect(s.values(3, 8)).to.deep.equal([64]);
+        expect(s.q.anyFunctionValues).to.equal(true);
     });
 
     it('should support unsafe inlines', () => {
