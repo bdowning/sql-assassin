@@ -78,7 +78,7 @@ class SqlA {
         }
     }
 
-    append(sql) {
+    concat(sql) {
         return new SqlA([this, ' ', sql], []);
     }
 

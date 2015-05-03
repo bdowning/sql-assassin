@@ -176,11 +176,11 @@ describe('utilities', () => {
         });
     });
 
-    describe('append', () => {
-        it('should chain appends', () => {
+    describe('concat', () => {
+        it('should chain concats', () => {
             let s = sql`SELECT *`
-                .append(sql`FROM foobar`)
-                .append(sql`WHERE TRUE`);
+                .concat(sql`FROM foobar`)
+                .concat(sql`WHERE TRUE`);
             expect(s.query()).to.equal('SELECT * FROM foobar WHERE TRUE');
         });
     });
