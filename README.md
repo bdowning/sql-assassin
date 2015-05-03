@@ -71,13 +71,13 @@ but may perform better when rendered many times.
 Returns a new SqlA that is the concatenation of `this` with `sqla`
 with a space in between.
 
-#### this.concat(sqla: SqlA): SqlA
+#### this.parenthesize(): SqlA
 
-Returns a new SqlA that is `sqla` wrapped in parentheses.
+Returns a new SqlA that is `this` wrapped in parentheses.
 
-#### this.not(sqla: SqlA): SqlA
+#### this.not(): SqlA
 
-Returns a new SqlA that is `sqla` prefixed with `'NOT '`.
+Returns a new SqlA that is `this` prefixed with `'NOT '`.
 
 ### Static methods
 
