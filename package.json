@@ -4,7 +4,8 @@
   "description": "Unfancy SQL builder for ES6",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel/register test/"
+    "compile": "rm -rf lib/ && babel -d lib/ src/",
+    "test": "rm -rf testc/ && babel -d testc/ test/ && mocha testc/"
   },
   "repository": {
     "type": "git",
