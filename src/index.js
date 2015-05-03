@@ -94,7 +94,7 @@ class SqlA {
 function sqlA(parts, ...values) {
     let outParts = new Array(parts.length + values.length);
     let outValues = [ ];
-    
+
     let p = 0, v = 0;
     for (let i = 0; i < outParts.length; ++i) {
         if (i % 2 == 0) {
