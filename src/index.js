@@ -82,7 +82,7 @@ class SqlA {
         return new SqlA([this, ' ', sql], []);
     }
 
-    parenthesize(sql) {
+    parenthesize() {
         return new SqlA(['(', this, ')'], []);
     }
 
