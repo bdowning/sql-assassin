@@ -30,7 +30,8 @@ class SqlA {
 
     flattenInto(parts, values) {
         let v = 0;
-        for (let part of this.parts) {
+        for (let i = 0; i < this.parts.length; ++i) {
+            let part = this.parts[i];
             if (part instanceof SqlA) {
                 part.flattenInto(parts, values);
             } else if (part === valuePlaceholder) {
