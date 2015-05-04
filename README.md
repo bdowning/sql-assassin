@@ -1,6 +1,8 @@
 sql-assassin — An unfancy node.js SQL builder for ES6
 =====================================================
 
+[![Build Status](https://travis-ci.org/bdowning/sql-assassin.svg?branch=master)](https://travis-ci.org/bdowning/sql-assassin)
+
 Introduction
 ------------
 
