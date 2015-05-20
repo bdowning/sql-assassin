@@ -1,6 +1,6 @@
 {
   "name": "sql-assassin",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Unfancy SQL builder for ES6",
   "main": "index.js",
   "scripts": {
