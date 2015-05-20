@@ -94,7 +94,7 @@ Possible format directives are:
   in a `sqlA` tagged template string.
 
 * `%%`: Inserts the literal `%` character.
-  Does not consume a value.
+  Does not consume an argument.
 
 #### sqlA.unsafe(string: String): SqlA
 
