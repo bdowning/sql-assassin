@@ -98,7 +98,7 @@ function sqlA(parts, ...values) {
 
     let p = 0, v = 0;
     for (let i = 0; i < outParts.length; ++i) {
-        if (i % 2 == 0) {
+        if (i % 2 === 0) {
             outParts[i] = parts[p++];
         } else {
             let value = values[v++];
@@ -115,7 +115,7 @@ function sqlA(parts, ...values) {
 }
 
 sqlA.unsafe = function unsafe(value) {
-    return new SqlA([null == value ? '' : String(value)], []);
+    return new SqlA([value == null ? '' : String(value)], []);
 };
 
 sqlA.ident = function ident(value) {
