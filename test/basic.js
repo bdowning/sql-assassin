@@ -109,6 +109,106 @@ describe('with arguments', () => {
     });
 });
 
+describe('with format', () => {
+    it('should be creatable', () => {
+        let s = sql.format('SELECT * FROM foo WHERE id = %v', 5);
+    });
+
+    it('should return the correct placeholders and values', () => {
+        let s = sql.format('SELECT * FROM foo WHERE id = %v', 5);
+        expect(s.vals).to.deep.equal([5]);
+        expect(s.query()).to.equal('SELECT * FROM foo WHERE id = $1');
+        expect(s.values()).to.deep.equal([5]);
+        expect(s.q.anyFunctionValues).to.equal(false);
+    });
+
+    it('should call function values with args from .values(...args)', () => {
+        let s = sql.format('SELECT * FROM foo WHERE id = %v',
+                           (x, y) => (5 + x) * y);
+        expect(s.query()).to.equal('SELECT * FROM foo WHERE id = $1');
+        expect(s.values(3, 8)).to.deep.equal([64]);
+        expect(s.q.anyFunctionValues).to.equal(true);
+    });
+
+    it('should support unsafe inlines', () => {
+        let inline = sql.unsafe('*');
+        expect(inline.parts).to.have.length(1);
+        expect(inline.vals).to.deep.equal([]);
+        expect(inline.parts[0]).to.equal('*');
+        expect(inline.query()).to.equal('*');
+        expect(inline.values()).to.deep.equal([]);
+
+        let cols = sql.format('%v', sql.unsafe('*'));
+        expect(cols.parts).to.have.length(3);
+        expect(cols.vals).to.deep.equal([]);
+        expect(cols.parts[1]).to.be.an.instanceof(sql.types.SqlA);
+        expect(cols.query()).to.equal('*');
+        expect(cols.values()).to.deep.equal([]);
+    });
+
+    it('should be nestable', () => {
+        let cols = sql.format('*');
+        let test1 = sql.format('id = %v', 5);
+        let test2 = sql.format('name = %v', 'hi');
+        let tests = sql.format('%v AND %v', test1, test2);
+        let s = sql.format('SELECT %v FROM foo WHERE %v', cols, tests);
+        expect(s.parts).to.deep.equal([
+            'SELECT ', cols, ' FROM foo WHERE ', tests, ''
+        ]);
+        expect(s.vals).to.deep.equal([]);
+
+        expect(s.query()).to.equal('SELECT * FROM foo WHERE id = $1 AND name = $2');
+        expect(s.values()).to.deep.equal([5, 'hi']);
+    });
+
+    it('should support unsafe inlines nested', () => {
+        let cols = sql.format('%v', sql.unsafe('*'));
+        let tests = sql.format('id = %v', 5);
+        let s = sql.format('SELECT %v FROM foo WHERE %v', cols, tests);
+        expect(s.parts).to.deep.equal([
+            'SELECT ', cols, ' FROM foo WHERE ', tests, ''
+        ]);
+        expect(s.vals).to.deep.equal([]);
+
+        expect(s.query()).to.equal('SELECT * FROM foo WHERE id = $1');
+        expect(s.values()).to.deep.equal([5]);
+    });
+
+    it('should be flattenable', () => {
+        let cols = sql.format('*');
+        let test1 = sql.format('id = %v', 5);
+        let test2 = sql.format('name = %v', 'hi');
+        let tests = sql.format('%v AND %v', test1, test2);
+        let s = sql.format('SELECT %v FROM foo WHERE %v', cols, tests).flatten();
+        expect(s.parts).to.deep.equal([
+            'SELECT * FROM foo WHERE id = ',
+            sql.types.valuePlaceholder,
+            ' AND name = ',
+            sql.types.valuePlaceholder,
+            ''
+        ]);
+        expect(s.vals).to.deep.equal([5, 'hi']);
+
+        expect(s.query()).to.equal('SELECT * FROM foo WHERE id = $1 AND name = $2');
+        expect(s.values()).to.deep.equal([5, 'hi']);
+    });
+
+    it('should treat %% as a literal %', () => {
+        let s = sql.format("SELECT '3%%' FROM foo WHERE id = %v", 5);
+
+        expect(s.query()).to.equal("SELECT '3%' FROM foo WHERE id = $1");
+        expect(s.values()).to.deep.equal([5]);
+    });
+
+    it('should fail on unknown format directives', () => {
+        expect(() => sql.format("SELECT %s", 5)).to.throw('Unknown format directive %s');
+    });
+
+    it('should fail with % at end of format', () => {
+        expect(() => sql.format("SELECT %", 5)).to.throw('Format string ends with %');
+    });
+});
+
 describe('utilities', () => {
     describe('escaping', () => {
         it('should support escaping literals', () => {

@@ -114,6 +114,39 @@ function sqlA(parts, ...values) {
     return new SqlA(outParts, outValues);
 }
 
+sqlA.format = function format(fmt, ...args) {
+    let splits = fmt.split('%');
+    let parts = [ splits[0] ];
+    let values = [ ];
+
+    let v = 0;
+    for (let i = 1; i < splits.length; ++i) {
+        let c = splits[i].slice(0, 1);
+        if (c === '') { // % due to split behavior
+            if (splits.length === i + 1) {
+                throw new Error('Format string ends with %');
+            }
+            parts[parts.length - 1] += '%' + splits[i + 1];
+            ++i;
+        } else {
+            if (c === 'v') {
+                let value = args[v++];
+                if (value instanceof SqlA) {
+                    parts.push(value);
+                } else {
+                    parts.push(valuePlaceholder);
+                    values.push(value);
+                }
+            } else {
+                throw new Error(`Unknown format directive %${c}`);
+            }
+            parts.push(splits[i].slice(1));
+        }
+    }
+
+    return new SqlA(parts, values);
+};
+
 sqlA.unsafe = function unsafe(value) {
     return new SqlA([value == null ? '' : String(value)], []);
 };

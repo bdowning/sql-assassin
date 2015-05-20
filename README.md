@@ -83,6 +83,19 @@ Returns a new SqlA that is `this` prefixed with `'NOT '`.
 
 ### Static methods
 
+#### sqlA.format(fmt: String, ...args): SqlA
+
+Creates a new SqlA by evaluating the format string `fmt`
+with the arguments `args`.
+Possible format directives are:
+
+* `%v`: Consumes an argument and treats it
+  as a value to be inserted as if it were an interpolated value
+  in a `sqlA` tagged template string.
+
+* `%%`: Inserts the literal `%` character.
+  Does not consume a value.
+
 #### sqlA.unsafe(string: String): SqlA
 
 Creates a new SqlA that contains the literal,
