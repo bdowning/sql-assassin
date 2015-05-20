@@ -1,0 +1,21 @@
+{
+  "parser": "babel-eslint",
+  "rules": {
+    "strict": 0,
+    "curly": 0,
+    "no-shadow": 0,
+    "camelcase": 0,
+    "new-cap": 0,
+    "quotes": 0,
+    "no-underscore-dangle": 0,
+    "no-path-concat": 0,
+    "no-constant-condition": 0,
+    "no-loop-func": 0,
+    "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+    "comma-dangle": [0, "always-multiline"],
+    "eqeqeq": [2, "smart", "allow-null"]
+  },
+  "env": {
+    "node": 1
+  }
+}
